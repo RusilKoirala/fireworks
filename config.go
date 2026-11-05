@@ -1,4 +1,4 @@
-package config
+package main
 
 const (
 	fps     = 30

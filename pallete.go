@@ -1,4 +1,4 @@
-package palette
+package main
 
 import "math/rand"
 
