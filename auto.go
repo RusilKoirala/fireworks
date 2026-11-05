@@ -39,7 +39,7 @@ func (m *model) setAuto(on bool) {
 	m.auto = on
 	if on {
 		m.stopAuto = make(chan struct{})
-		go autoLauncher(nil, nil)
+		go autoLauncher(m.launches, m.stopAuto)
 	} else {
 		close(m.stopAuto)
 	}
