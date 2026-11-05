@@ -1,7 +1,7 @@
 package main
 
 import (
-	"crypto/rand"
+	"math/rand"
 
 	tea "github.com/charmbracelet/bubbletea"
 )
