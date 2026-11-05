@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	p := tea.NewProgram(nil, tea.WithAltScreen(), tea.WithMouseCellMotion())
+	p := tea.NewProgram(newModel(), tea.WithAltScreen(), tea.WithMouseCellMotion())
 
 	if _, err := p.Run(); err != nil {
 		fmt.Fprintf(os.Stderr, "firworks fizzled:", err)
