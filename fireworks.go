@@ -27,7 +27,7 @@ func (m *model) launch(l launchMsg) {
 	})
 }
 
-func (m *model) add(p particle) {
+func (m *model) add(p Particle) {
 	if len(m.parts) < maxParticles {
 		m.parts = append(m.parts, p)
 	}
@@ -60,7 +60,7 @@ func (m *model) burstClassic(r rocket, s float64) {
 		if mixed && i%2 == 0 {
 			pal = alt
 		}
-		m.add(particle{
+		m.add(Particle{
 			x: r.x, y: r.y,
 			vx: math.Cos(a) * sp, vy: math.Sin(a) * sp * aspect,
 			life: 1.2 + rand.Float64()*1.0, pal: pal,
@@ -76,7 +76,7 @@ func (m *model) burstRing(r rocket, s float64) {
 	ringOf := func(count int, speed, life float64, pal palette) {
 		for i := 0; i < count; i++ {
 			a := offset + float64(i)/float64(count)*2*math.Pi
-			m.add(particle{
+			m.add(Particle{
 				x: r.x, y: r.y,
 				vx: math.Cos(a) * speed, vy: math.Sin(a) * speed * aspect,
 				life: life, pal: pal, grav: 0.8, drag: 1.0,
@@ -93,7 +93,7 @@ func (m *model) burstWillow(r rocket, s float64) {
 	for i := 0; i < 70; i++ {
 		a := rand.Float64() * 2 * math.Pi
 		sp := (0.4 + 0.6*rand.Float64()) * 12 * s
-		m.add(particle{
+		m.add(Particle{
 			x: r.x, y: r.y,
 			vx: math.Cos(a) * sp, vy: math.Sin(a) * sp * aspect,
 			life: 3.0 + rand.Float64()*1.6, pal: gold,
@@ -110,7 +110,7 @@ func (m *model) burstHeart(r rocket, s float64) {
 		t := float64(i) / float64(n) * 2 * math.Pi
 		hx := 16 * math.Pow(math.Sin(t), 3)
 		hy := 13*math.Cos(t) - 5*math.Cos(2*t) - 2*math.Cos(3*t) - math.Cos(4*t)
-		m.add(particle{
+		m.add(Particle{
 			x: r.x, y: r.y,
 			vx: hx * k, vy: -hy * k * aspect,
 

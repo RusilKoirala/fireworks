@@ -79,7 +79,7 @@ func (m *model) drawStars(cv *canvas) {
 }
 
 func (m *model) drawShooters(cv *canvas) {
-	for _, s := range m.shooters {
+	for _, s := range m.shooter {
 		tail := '-'
 		if math.Abs(s.vx) < 3*math.Abs(s.vy) {
 			if s.vx > 0 {

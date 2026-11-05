@@ -54,7 +54,7 @@ func (m *model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "right", "l":
 		m.nudgeWind(+2)
 	case "c":
-		m.rockets, m.parts, m.shooters = nil, nil, nil
+		m.rockets, m.parts, m.shooter = nil, nil, nil
 	}
 	return m, nil
 }
