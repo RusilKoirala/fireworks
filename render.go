@@ -14,15 +14,18 @@ type cell struct {
 	prio int
 }
 
+// canvas stuct
 type canvas struct {
 	w, h  int
 	cells []cell
 }
 
+// draw a new canvas
 func newCanvas(w, h int) *canvas {
 	return &canvas{w: w, h: h, cells: make([]cell, w*h)}
 }
 
+// to put things
 func (cv *canvas) put(fx, fy float64, r rune, c string, prio int) {
 	x, y := int(math.Round(fx)), int(math.Round(fy))
 	if x < 0 || x >= cv.w || y < 0 || y >= cv.h {
@@ -34,6 +37,7 @@ func (cv *canvas) put(fx, fy float64, r rune, c string, prio int) {
 	}
 }
 
+// to style
 func (m *model) style(c string) lipgloss.Style {
 	s, ok := m.styles[c]
 	if !ok {
@@ -46,6 +50,7 @@ func (m *model) style(c string) lipgloss.Style {
 	return s
 }
 
+// to view
 func (m *model) View() string {
 	if m.w == 0 || m.h < 3 {
 		return "lighting the fuse…"
@@ -61,6 +66,7 @@ func (m *model) View() string {
 	return m.paint(cv) + m.statusBar()
 }
 
+// draw stars
 func (m *model) drawStars(cv *canvas) {
 	for _, s := range m.stars {
 		x, y := float64(s.x), float64(s.y)
@@ -78,6 +84,7 @@ func (m *model) drawStars(cv *canvas) {
 	}
 }
 
+// draw the shooters
 func (m *model) drawShooters(cv *canvas) {
 	for _, s := range m.shooter {
 		tail := '-'

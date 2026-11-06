@@ -8,6 +8,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
+// colors
 var (
 	barBg    = lipgloss.Color("#161a2b")
 	keyStyle = lipgloss.NewStyle().Background(barBg).Foreground(lipgloss.Color("#ffe066")).Bold(true)
@@ -16,6 +17,7 @@ var (
 	autoOn   = lipgloss.NewStyle().Background(lipgloss.Color("#2f9e44")).Foreground(lipgloss.Color("#ffffff")).Bold(true).Padding(0, 1)
 )
 
+// status bar for info
 func (m *model) statusBar() string {
 	sep := txtStyle.Render("  ")
 	item := func(k, label string) string { return keyStyle.Render(k) + txtStyle.Render(" "+label) }
@@ -47,6 +49,7 @@ func (m *model) statusBar() string {
 	return lipgloss.NewStyle().MaxWidth(m.w).Render(line)
 }
 
+// windows arrow func
 func windArrows(wind float64) string {
 	n := int(math.Min(4, math.Round(math.Abs(wind)/2.5)))
 	switch {

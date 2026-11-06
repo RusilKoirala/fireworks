@@ -2,7 +2,9 @@ package main
 
 import "math/rand"
 
-// step advances the whole simulation by one frame.
+// physics system took a while , idk alot of physics so i had to take help of ai
+
+// update the step
 func (m *model) step() {
 	if m.w == 0 {
 		return
@@ -14,7 +16,7 @@ func (m *model) step() {
 	m.updateShooters()
 }
 
-// updateWind lets the wind wander slowly toward a new target every few seconds.
+// update wind for render
 func (m *model) updateWind() {
 	m.windTimer -= dt
 	if m.windTimer <= 0 {
@@ -24,7 +26,7 @@ func (m *model) updateWind() {
 	m.wind += (m.windTarget - m.wind) * 0.6 * dt
 }
 
-// updateRockets: rockets climb, shed sparks, and burst near their apex.
+// update the rockets for render
 func (m *model) updateRockets() {
 	alive := m.rockets[:0]
 	for _, r := range m.rockets {
@@ -48,8 +50,7 @@ func (m *model) updateRockets() {
 	m.rockets = alive
 }
 
-// updateParticles: gravity pulls sparks down, air drag pulls their velocity
-// toward the wind (so everything drifts together), and age fades them out.
+// updates the particles for render
 func (m *model) updateParticles() {
 	next := m.parts[:0]
 	var drips []Particle
@@ -78,7 +79,7 @@ func (m *model) updateParticles() {
 	}
 }
 
-// updateShooters spawns rare shooting stars and moves existing ones.
+// just updates the shooters
 func (m *model) updateShooters() {
 	if rand.Float64() < 0.006 {
 		dir := 1.0
