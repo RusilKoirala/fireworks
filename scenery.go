@@ -5,6 +5,7 @@ import (
 	"math/rand"
 )
 
+// to build secenery
 func (m *model) buildScenery() {
 	sky := m.skyH()
 
@@ -37,6 +38,7 @@ func (m *model) buildScenery() {
 	}
 }
 
+// to make those yellow windwss
 func (m *model) windowLit(x, y, h int) bool {
 	return !m.edge[x] && h%2 == 1 && x%2 == 0 && hash(x, y)%3 == 0
 }
