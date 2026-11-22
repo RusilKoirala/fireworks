@@ -43,7 +43,7 @@ func (m *model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "q", "esc", "ctrl+c":
 		m.setAuto(false)
 		return m, tea.Quit
-	case "1", "2", "3", "4":
+	case "1", "2", "3", "4", "5", "6", "7", "8":
 		m.launch(launchMsg{k: kind(msg.String()[0] - '1'), xf: randX(), yAim: -1})
 	case " ", "space", "enter":
 		m.launch(launchMsg{k: randomKind(), xf: randX(), yAim: -1})

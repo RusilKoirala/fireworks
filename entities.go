@@ -7,6 +7,10 @@ const (
 	ring
 	willow
 	heart
+	spiral
+	doubleRing
+	starburst
+	palm
 	numKinds
 )
 

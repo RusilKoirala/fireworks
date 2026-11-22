@@ -46,6 +46,14 @@ func (m *model) explode(r rocket) {
 		m.burstWillow(r, s)
 	case heart:
 		m.burstHeart(r, s)
+	case spiral:
+		m.burstSpiral(r, s)
+	case doubleRing:
+		m.burstDoubleRing(r, s)
+	case starburst:
+		m.burstStar(r, s)
+	case palm:
+		m.burstPalm(r, s)
 	}
 }
 
