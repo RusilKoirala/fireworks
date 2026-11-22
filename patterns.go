@@ -57,3 +57,63 @@ func (m *model) burstDoubleRing(r rocket, s float64) {
 		}
 	}
 }
+
+
+func (m *model) burstStar(r rocket, s float64) {
+	var vertices [10][2]float64
+	
+	for i := range vertices {
+		angle := -math.Pi/2 + float64(i)*math.Pi/5
+		radius := 18 *s
+
+		if i%2 ==  1 {
+			radius *= 0.42
+		}
+
+		vertices[i] = [2]float64 {
+			math.Cos(angle) * radius,
+			math.Sin(angle) * radius,
+		}
+	}
+
+	for edge := range vertices {
+		start := vertices[edge]
+		end := vertices[(edge+1)%len(vertices)]
+
+		for i := 0; i< 10; i++ {
+			t:= float64(i) / 10 
+			vx := start[0] + (end[0]-start[0])*t
+			vy := start[1] + (end[1]-start[1]) * t
+
+			m.add(Particle{
+				x: r.x, y: r.y,
+				vx: vx, vy:vy * aspect,
+				life: 2.3, pal: r.pal,
+				grav: 0.1, drag: 0.7,
+			})
+		}
+	}
+}
+
+
+func (m *model) burstPalm(r rocket, s float64) {
+	const fronds , points = 7,12
+
+	for frond :=0; frond < fronds; frond++ {
+		angle := -0.9*math.Pi + float64(frond)/float64(fronds-1)*0.8*math.Pi;
+
+		for i := 0; i<points;i++ {
+			t:= float64(i) / float64(points-1)
+			speed := (0.35+0.65*t) * 19 * s
+
+			m.add(Particle{
+				x: r.x, y:r.y,
+				vx: math.Cos(angle) * speed,
+				vy: math.Sin(angle) * speed * aspect,
+				life: 2.6+ rand.Float64()*0.6,
+				pal: gold, grav: 0.8, drag: 0.45,
+				drips: true,
+			})
+		}
+	}
+}
