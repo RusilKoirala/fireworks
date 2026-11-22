@@ -4,6 +4,7 @@ import "math/rand"
 
 type palette []string
 
+// color pallete for colorfull ROCKETSSS
 var (
 	red    = palette{"#fff5f5", "#ff8787", "#f03e3e", "#a61e1e", "#4a0e0e"}
 	gold   = palette{"#fffbe6", "#ffe066", "#fcc419", "#e8590c", "#5c2604"}
@@ -21,6 +22,7 @@ var (
 	tailGray = []string{"#ffffff", "#dee2e6", "#adb5bd", "#868e96", "#5c636a", "#3d434a", "#2b3035"}
 )
 
+// both for this
 func randPal() palette {
 	return allPalletes[rand.Intn(len((allPalletes)))]
 }
