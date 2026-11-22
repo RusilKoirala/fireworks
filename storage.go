@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -103,5 +104,67 @@ func writeStudioJSON(name string, value any) error {
 
 
 func loadPreferencesCmd() tea.Cmd {
-	
+	return  func () tea.Msg  {
+		prefs := defaultPreferences()
+		err := readStudioJSON("settings.json", &prefs)
+
+		if errors.Is(err, os.ErrNotExist) {
+			return  preferencesLoadedMsg{missing: true}
+		}
+
+		if err == nil {
+			err = prefs.validate()
+		}
+
+		return preferencesLoadedMsg{
+			prefs: prefs,
+			err: err,
+		}
+	}
+}
+
+func savePreferencesCmd(prefs preferences) tea.Cmd {
+	return func() tea.Msg {
+		err := prefs.validate()
+
+		if err == nil {
+			err = writeStudioJSON("settings.json",prefs)
+		}
+		return  fileSavedMsg{
+			name: "settings.json",
+			err: err,
+		}
+	}
+}
+
+func loadTapeCmd() tea.Cmd {
+	return func() tea.Msg {
+		var tape recording 
+		err := readStudioJSON("recording.json", &tape)
+
+		if err == nil {
+			err = tape.validate()
+		}
+
+		return  tapeLoadedMsg{
+			tape: tape,
+			err : err,
+		}
+	}
+}
+
+func saveTapeCmd(tape recording) tea.Cmd {
+	tape.Events = append([]launchCue(nil), tape.Events...)
+
+	return func() tea.Msg {
+		err := tape.validate()
+
+		if err == nil {
+			err = writeStudioJSON("recording.json",tape);
+		}
+		return fileSavedMsg{
+			name: "recording.json",
+			err: err,
+		}
+	}
 }
