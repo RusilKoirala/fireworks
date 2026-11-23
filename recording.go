@@ -170,3 +170,25 @@ func (m *model) toggleReplay() {
 
 	m.tell("replay started; press t to stop")
 }
+
+func (m *model) advanceReplay() {
+	p := &m.studio.replay
+
+	if !p.active {
+		return
+	}
+
+	tape := &m.studio.tape
+
+	for p.next < len(tape.Events) && tape.Events[p.next].At <= p.elapsed {
+		m.launchCue(tape.Events[p.next])
+		p.next++
+	}
+
+	if p.elapsed >= tape.Duration && p.next == len(tape.Events) {
+		m.active = false 
+		m.tell("replay finished")
+	}
+
+	p.elapsed += dt
+}
