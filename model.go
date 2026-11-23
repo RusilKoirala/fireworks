@@ -18,13 +18,11 @@ type model struct {
 	edge    []bool
 
 	wind, windTarget, windTimer float64
-	studio studioState
-	clock float64
-
-
-	auto     bool
-	stopAuto chan struct{}
-	launches chan launchMsg
+	studio                      studioState
+	clock                       float64
+	auto                        bool
+	stopAuto                    chan struct{}
+	launches                    chan launchMsg
 
 	styles map[string]lipgloss.Style
 }
@@ -35,7 +33,7 @@ func newModel() *model {
 		styles:     map[string]lipgloss.Style{},
 		windTarget: rand.Float64()*4 - 2,
 		windTimer:  5,
-		studio: newStudio(),
+		studio:     newStudio(),
 	}
 }
 func (m *model) skyH() int {
@@ -44,8 +42,8 @@ func (m *model) skyH() int {
 
 func (m *model) Init() tea.Cmd {
 	return tea.Batch(
-		tick(), 
-		waitLaunch((m.launches)),
+		tick(),
+		waitLaunch(m.launches),
 		loadPreferencesCmd(),
 	)
 }

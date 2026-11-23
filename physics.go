@@ -18,6 +18,10 @@ func (m *model) step() {
 
 // update wind for render
 func (m *model) updateWind() {
+	if m.studio.prefs.WindLocked {
+		m.wind = m.studio.prefs.Wind
+		return
+	}
 	m.windTimer -= dt
 	if m.windTimer <= 0 {
 		m.windTarget = rand.Float64()*8 - 4
@@ -57,7 +61,7 @@ func (m *model) updateParticles() {
 	W, H := float64(m.w), float64(m.h)
 	for _, p := range m.parts {
 		p.vx += (m.wind - p.vx) * p.drag * dt
-		p.vy += gravity*p.grav*dt - p.vy*p.drag*dt
+		p.vy += gravity*m.studio.prefs.Gravity*p.grav*dt - p.vy*p.drag*dt
 		p.x += p.vx * dt
 		p.y += p.vy * dt
 		p.age += dt

@@ -52,8 +52,11 @@ func (m *model) style(c string) lipgloss.Style {
 
 // to view
 func (m *model) View() string {
-	if m.w == 0 || m.h < 3 {
-		return "lighting the fuse…"
+	if m.w < 4 || m.h < 6 {
+		return "Resize terminal: minimum 4 columns and 6 rows."
+	}
+	if panel := m.studioPanel(); panel != "" {
+		return panel
 	}
 	cv := newCanvas(m.w, m.skyH())
 
@@ -63,7 +66,7 @@ func (m *model) View() string {
 	m.drawRockets(cv)
 	m.drawSkyline(cv)
 
-	return m.paint(cv) + m.statusBar()
+	return m.paint(cv) + m.studioStatusBar()
 }
 
 // draw stars
@@ -140,6 +143,9 @@ func (m *model) drawRockets(cv *canvas) {
 }
 
 func (m *model) drawSkyline(cv *canvas) {
+	if !m.studio.prefs.Skyline {
+		return
+	}
 	for x := 0; x < cv.w && x < len(m.skyline); x++ {
 		for h := 0; h < m.skyline[x]; h++ {
 			y := cv.h - 1 - h

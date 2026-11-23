@@ -13,7 +13,7 @@ func (m *model) buildScenery() {
 		return
 	}
 
-	n := m.w * sky / 32
+	n := m.w * sky * m.studio.prefs.StarDensity / 32
 	m.stars = make([]star, n)
 	for i := range m.stars {
 		m.stars[i] = star{

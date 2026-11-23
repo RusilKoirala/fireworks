@@ -2,18 +2,14 @@ package main
 
 import tea "github.com/charmbracelet/bubbletea"
 
-
 func (m *model) studioKey(msg tea.KeyMsg) (bool, tea.Cmd) {
 	key := msg.String()
-
 	if key == "q" || key == "ctrl+c" {
-		return false,nil
+		return false, nil
 	}
-
 	if m.studio.panel != "" {
 		return true, m.panelKey(key)
 	}
-
 	switch key {
 	case "?":
 		m.openPanel("help")
@@ -29,7 +25,7 @@ func (m *model) studioKey(msg tea.KeyMsg) (bool, tea.Cmd) {
 		m.setSpeed(1)
 	case "v":
 		m.studio.selected = (m.studio.selected + 1) % len(showNames)
-		m.tell("Selected" + showNames[m.studio.selected]+ "; g starts it")
+		m.tell("Selected " + showNames[m.studio.selected] + "; g starts it")
 	case "g":
 		m.toggleShow()
 	case "r":
@@ -37,14 +33,14 @@ func (m *model) studioKey(msg tea.KeyMsg) (bool, tea.Cmd) {
 	case "t":
 		m.toggleReplay()
 	case "w":
-		jf m.studio.recorder.active {
-			m.tell("press r to finish recording before saving")
-			break 
+		if m.studio.recorder.active {
+			m.tell("Press r to finish recording before saving")
+			break
 		}
-		return  true, loadTapeCmd()
+		return true, saveTapeCmd(m.studio.tape)
 	case "o":
 		if m.studio.recorder.active || m.studio.replay.active {
-			m.tell("stop recording or replay before loading")
+			m.tell("Stop recording or replay before loading")
 			break
 		}
 		return true, loadTapeCmd()
@@ -54,38 +50,30 @@ func (m *model) studioKey(msg tea.KeyMsg) (bool, tea.Cmd) {
 		m.studio.show.active = false
 		m.studio.replay.active = false
 		m.setAuto(!m.auto)
-	case "left","right","h","l":
+	case "left", "right", "h", "l":
 		m.studio.prefs.WindLocked = false
-		m.studio.replay.active = false
-		m.setAuto(!m.auto);
-	
-	case "c" :
-		m.studio.show.active = false 
+		return false, nil
+	case "c":
+		m.studio.show.active = false
 		m.studio.replay.active = false
 		m.clearSky()
 	default:
 		if m.studio.replay.active {
-			m.tell("replay is active; t stops it")
-			return true, nil 
+			m.tell("Replay is active; t stops it")
+			return true, nil
 		}
-		return false,nil 
+		return false, nil
 	}
-
-	return true,nil
+	return true, nil
 }
 
-func (m *model) openPanel(name string) {
-	m.studio.panel = name
-	m.studio.scroll = 0
-}
+func (m *model) openPanel(name string) { m.studio.panel = name; m.studio.scroll = 0 }
 
-func (m *model) panelKey(key string) tea.Cmd{
-	s := &m.studio 
-
+func (m *model) panelKey(key string) tea.Cmd {
+	s := &m.studio
 	switch key {
 	case "esc", "enter":
 		s.panel = ""
-	
 	case "?":
 		if s.panel == "help" {
 			s.panel = ""
@@ -94,11 +82,9 @@ func (m *model) panelKey(key string) tea.Cmd{
 		}
 	case "s", "i":
 		name := "settings"
-
 		if key == "i" {
 			name = "stats"
 		}
-
 		if s.panel == name {
 			s.panel = ""
 		} else {
@@ -116,13 +102,13 @@ func (m *model) panelKey(key string) tea.Cmd{
 		} else {
 			s.scroll++
 		}
-	case "left", 'h':
+	case "left", "h":
 		if s.panel == "settings" {
 			m.adjustSetting(-1)
-			} 
+		}
 	case "right", "l":
 		if s.panel == "settings" {
-				m.adjustSetting(1)
+			m.adjustSetting(1)
 		}
 	case "b":
 		return savePreferencesCmd(s.prefs)
@@ -130,9 +116,8 @@ func (m *model) panelKey(key string) tea.Cmd{
 		if s.panel == "settings" {
 			s.prefs = defaultPreferences()
 			m.buildScenery()
-			m.tell("defaults restored; b saves them")
+			m.tell("Defaults restored; b saves them")
 		}
-	} 
-
+	}
 	return nil
 }

@@ -6,7 +6,7 @@ import (
 )
 
 func (m *model) launch(l launchMsg) {
-	if m.w == 0 {
+	if m.studioFrozen() {
 		return
 	}
 
@@ -21,6 +21,7 @@ func (m *model) launch(l launchMsg) {
 	vy := -math.Sqrt(2 * rocketG * (startY - target))
 	x := clamp(l.xf, 0.02, 0.98) * float64(m.w)
 
+	m.captureLaunch(l)
 	m.rockets = append(m.rockets, rocket{
 		x: x, y: startY, vx: rand.Float64()*4 - 2, vy: vy,
 		targetY: target, k: l.k, pal: randPal(),
@@ -28,12 +29,13 @@ func (m *model) launch(l launchMsg) {
 }
 
 func (m *model) add(p Particle) {
-	if len(m.parts) < maxParticles {
+	if len(m.parts) < m.particleLimit() {
 		m.parts = append(m.parts, p)
 	}
 }
 
 func (m *model) explode(r rocket) {
+	m.studio.exploded++
 
 	s := clamp(float64(m.skyH())/26, 0.6, 1.7)
 
