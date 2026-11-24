@@ -1,11 +1,20 @@
 * {
+  font-family: "Google Sans", sans-serif;
 }
 
-header {
+.hea {
+  text-align: center;
 }
 
-image {
+.imgg {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 500px;
+  height: 300px;
+  border-radius: 12px;
 }
 
-desc {
+.desc {
+  text-align: center;
 }

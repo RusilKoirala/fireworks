@@ -5,6 +5,8 @@ import (
 	"math/rand"
 )
 
+
+
 func (m *model) burstSpiral(r rocket, s float64) {
 	const arms, points = 3, 30
 	offset := rand.Float64() * 2 * math.Pi
@@ -25,6 +27,8 @@ func (m *model) burstSpiral(r rocket, s float64) {
 		}
 	}
 }
+
+
 
 func (m *model) burstDoubleRing(r rocket, s float64) {
 	offset := rand.Float64() * 2 * math.Pi
