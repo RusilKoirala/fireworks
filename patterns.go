@@ -5,11 +5,10 @@ import (
 	"math/rand"
 )
 
-
-
 func (m *model) burstSpiral(r rocket, s float64) {
 	const arms, points = 3, 30
 	offset := rand.Float64() * 2 * math.Pi
+
 
 	for arm := 0; arm < arms; arm++ {
 		for i := 0; i < points; i++ {
@@ -18,6 +17,7 @@ func (m *model) burstSpiral(r rocket, s float64) {
 			speed := (0.15 + 0.85*t) * 18 * s
 
 			m.add(Particle{
+				
 				x: r.x, y: r.y,
 				vx:   math.Cos(angle) * speed,
 				vy:   math.Sin(angle) * speed * aspect,

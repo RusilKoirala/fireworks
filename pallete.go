@@ -4,6 +4,10 @@ import "math/rand"
 
 type palette []string
 
+const w = "how";
+var huh = "wpe";
+
+
 // color pallete for colorfull ROCKETSSS
 var (
 	red    = palette{"#fff5f5", "#ff8787", "#f03e3e", "#a61e1e", "#4a0e0e"}
@@ -26,3 +30,5 @@ var (
 func randPal() palette {
 	return allPalletes[rand.Intn(len((allPalletes)))]
 }
+
+
