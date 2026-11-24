@@ -21,6 +21,45 @@
       Fireworks is a terminal software that allows you to light up the terminal
     </p>
 
-    <div class="btr"></div>
+    <div class="btr">
+      <button class="" onClick="Download()">Download</button>
+      <button class="" onclick="openGithub()">Github</button>
+    </div>
+
+    <div>
+      <h1>For macOS / Linux</h1>
+    </div>
   </body>
+
+  <script>
+    async function Download() {
+      const url = "";
+
+      try {
+        const response = await fetch(url);
+
+        const blob = await response.blob();
+
+        const blobUrl = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+
+        link.href = blobUrl;
+
+        link.download;
+        document.body.appendChild(link);
+        link.click();
+
+        link.remove();
+        URL.revokeObjectURL(blobUrl);
+      } catch (error) {
+        console.error("Download failed:", error);
+        window.alert("error downloading");
+      }
+    }
+
+    function openGithub() {
+      window.location.href = "https://github.com/rusilkoirala/fireworks";
+    }
+  </script>
 </html>
