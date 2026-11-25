@@ -18,7 +18,7 @@ func (m *model) studioStatusBar() string {
 	if s.paused {
 		state = "PAUSED"
 	}
-	
+
 	if s.recorder.active {
 		state += " REC"
 	}
