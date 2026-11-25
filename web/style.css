@@ -32,3 +32,27 @@
   border-radius: 15px;
   border-color: "#ffffff";
 }
+
+.copy-btn {
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.script-area {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.script-area textarea {
+  border-radius: 15px;
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 5px;
+}
+
+.script-area button {
+  background-color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 15px;
+}

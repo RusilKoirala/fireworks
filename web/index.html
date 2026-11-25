@@ -15,58 +15,71 @@
   <body>
     <h1 class="hea">Fireworks</h1>
 
-    <img class="imgg" src="../asset/terminal.png" />
+    <img
+      class="imgg"
+      src="../asset/terminal.png"
+      alt="Fireworks terminal preview"
+    />
 
     <p class="desc">
       Fireworks is a terminal software that allows you to light up the terminal
     </p>
 
     <div class="btr">
-      <button class="" onClick="Download()">Download</button>
-      <button class="" onclick="openGithub()">Github</button>
+      <button onclick="Download()">Download</button>
+      <button onclick="openGithub()">Github</button>
+    </div>
+    <h2 style="text-align: center">For macOS / Linux</h1>
+    <div class="script-area">
+      <textarea class="text-area" id="text">Script: https://</textarea>
+
+      <button class="copy-btn" onclick="copy()">Copy</button>
     </div>
 
-    <div>
-      <h1>For macOS / Linux</h1>
+    <script>
+      async function Download() {
+        // TODO: Add your actual file URL here
+        const url = "https://example.com/your-file.zip";
 
-      <textarea>
-Script: 
-https:// 
+        try {
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
 
-      </textarea>
-      <button>Copy</button>
-    </div>
-  </body>
+          const blob = await response.blob();
+          const blobUrl = URL.createObjectURL(blob);
 
-  <script>
-    async function Download() {
-      const url = "";
+          const link = document.createElement("a");
+          link.href = blobUrl;
+          link.download = "fireworks.zip";
 
-      try {
-        const response = await fetch(url);
+          document.body.appendChild(link);
+          link.click();
 
-        const blob = await response.blob();
-
-        const blobUrl = URL.createObjectURL(blob);
-
-        const link = document.createElement("a");
-
-        link.href = blobUrl;
-
-        link.download;
-        document.body.appendChild(link);
-        link.click();
-
-        link.remove();
-        URL.revokeObjectURL(blobUrl);
-      } catch (error) {
-        console.error("Download failed:", error);
-        window.alert("error downloading");
+          link.remove();
+          URL.revokeObjectURL(blobUrl);
+        } catch (error) {
+          console.error("Download failed:", error);
+          window.alert("Error downloading file.");
+        }
       }
-    }
 
-    function openGithub() {
-      window.location.href = "https://github.com/rusilkoirala/fireworks";
-    }
-  </script>
+      function openGithub() {
+        window.location.href = "https://github.com/rusilkoirala/fireworks";
+      }
+
+      async function copy() {
+        const textArea = document.getElementById("text");
+
+        const text = textArea.value.trim();
+
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch (err) {
+          console.error("Failed to copy:", err);
+        }
+      }
+    </script>
+  </body>
 </html>

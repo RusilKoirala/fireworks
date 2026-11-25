@@ -6,6 +6,7 @@ import (
 )
 
 // to build secenery
+// just some background to the worlddd :)
 func (m *model) buildScenery() {
 	sky := m.skyH()
 
@@ -36,6 +37,7 @@ func (m *model) buildScenery() {
 		}
 		x += bw
 	}
+	
 }
 
 // to make those yellow windwss
