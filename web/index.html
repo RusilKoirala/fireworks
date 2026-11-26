@@ -29,51 +29,47 @@
       <button onclick="Download()">Download</button>
       <button onclick="openGithub()">Github</button>
     </div>
-    <h2 style="text-align: center">For macOS / Linux</h1>
-    <div class="script-area">
-      <textarea class="text-area" id="text">Script: https://</textarea>
 
+    <h2 style="text-align: center">For macOS / Linux</h2>
+    <div class="script-area">
+      <textarea class="text-area" id="text" readonly>
+curl -fsSL https://raw.githubusercontent.com/RusilKoirala/fireworks/main/install.sh | sh</textarea
+      >
       <button class="copy-btn" onclick="copy()">Copy</button>
     </div>
 
     <script>
-      async function Download() {
-        // TODO: Add your actual file URL here
-        const url = "https://example.com/your-file.zip";
+      const BASE =
+        "https://github.com/RusilKoirala/fireworks/releases/latest/download/";
 
-        try {
-          const response = await fetch(url);
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-
-          const blob = await response.blob();
-          const blobUrl = URL.createObjectURL(blob);
-
-          const link = document.createElement("a");
-          link.href = blobUrl;
-          link.download = "fireworks.zip";
-
-          document.body.appendChild(link);
-          link.click();
-
-          link.remove();
-          URL.revokeObjectURL(blobUrl);
-        } catch (error) {
-          console.error("Download failed:", error);
-          window.alert("Error downloading file.");
+      function pickFile() {
+        const ua = navigator.userAgent.toLowerCase();
+        if (ua.includes("win")) return "fireworks-setup.exe";
+        if (ua.includes("mac")) return "fireworks-darwin-arm64.tar.gz"; // most Macs are Apple Silicon now
+        if (ua.includes("linux")) {
+          return ua.includes("aarch64") || ua.includes("arm")
+            ? "fireworks-linux-arm64.tar.gz"
+            : "fireworks-linux-amd64.tar.gz";
         }
+        return null;
+      }
+
+      function Download() {
+        const file = pickFile();
+        if (!file) {
+          window.location.href =
+            "https://github.com/RusilKoirala/fireworks/releases/latest";
+          return;
+        }
+        window.location.href = BASE + file;
       }
 
       function openGithub() {
-        window.location.href = "https://github.com/rusilkoirala/fireworks";
+        window.location.href = "https://github.com/RusilKoirala/fireworks";
       }
 
       async function copy() {
-        const textArea = document.getElementById("text");
-
-        const text = textArea.value.trim();
-
+        const text = document.getElementById("text").value.trim();
         try {
           await navigator.clipboard.writeText(text);
         } catch (err) {
