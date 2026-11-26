@@ -1,0 +1,85 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - { goos: darwin, goarch: arm64 }
+          - { goos: darwin, goarch: amd64 }
+          - { goos: linux, goarch: amd64 }
+          - { goos: linux, goarch: arm64 }
+          - { goos: windows, goarch: amd64 }
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Build
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+          CGO_ENABLED: "0"
+        run: |
+          mkdir -p dist out
+          if [ "$GOOS" = "windows" ]; then
+            go build -trimpath -ldflags "-s -w" -o dist/fireworks.exe .
+            cp dist/fireworks.exe out/fireworks-windows-amd64.exe
+          else
+            go build -trimpath -ldflags "-s -w" -o dist/fireworks .
+            tar -czf out/fireworks-$GOOS-$GOARCH.tar.gz -C dist fireworks
+          fi
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fireworks-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: out/*
+
+  windows-installer:
+    needs: build
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: fireworks-windows-amd64
+          path: installer
+
+      - name: Install Inno Setup
+        run: choco install innosetup -y --no-progress
+
+      - name: Build installer
+        shell: pwsh
+        run: |
+          $version = "${{ github.ref_name }}".TrimStart("v")
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "/DMyAppVersion=$version" installer\fireworks.iss
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fireworks-setup
+          path: installer/Output/fireworks-setup.exe
+
+  release:
+    needs: [build, windows-installer]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*
+          generate_release_notes: true
